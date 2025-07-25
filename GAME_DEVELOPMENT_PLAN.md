@@ -1,7 +1,7 @@
 # 🎮 Animal Game Development Plan
 
 ## Game Overview
-An interactive animal selection game with an instruction panel for first-time players and an engaging animal selection interface.
+An interactive animal obstacle course game where players select their favorite animal and guide them through challenging courses to collect stars and reach the finish line.
 
 ## Game Flow
 
@@ -24,6 +24,25 @@ An interactive animal selection game with an instruction panel for first-time pl
 - Starts the main game experience
 - Smooth transition to gameplay
 
+### 4. **Obstacle Course Gameplay**
+- Side-scrolling or top-down view of the course
+- Player controls animal movement (arrow keys or WASD)
+- Navigate through various obstacles:
+  - Jumping over barriers
+  - Avoiding moving obstacles
+  - Climbing platforms
+  - Swimming through water sections
+- Collect stars scattered throughout the course
+- Reach the finish line to complete the level
+
+### 5. **Game Mechanics**
+- **Movement**: Smooth animal control with physics
+- **Stars**: Collectible items that increase score
+- **Obstacles**: Various challenges requiring different strategies
+- **Timer**: Optional time limit for added challenge
+- **Lives/Health**: System to handle collision with obstacles
+- **Victory Condition**: Collect all stars and reach the finish
+
 ## Technical Implementation Plan
 
 ### Project Structure
@@ -37,7 +56,11 @@ animals/
 │   ├── app.js          # Main application logic
 │   ├── instructions.js # Instruction panel logic
 │   ├── animalBoard.js  # Animal selection logic
-│   └── gameState.js    # Game state management
+│   ├── gameState.js    # Game state management
+│   ├── obstacle.js     # Obstacle course logic
+│   ├── player.js       # Player/animal control
+│   ├── physics.js      # Game physics engine
+│   └── levels.js       # Level configurations
 ├── assets/
 │   ├── images/         # Animal images
 │   └── sounds/         # Optional sound effects
@@ -73,19 +96,43 @@ animals/
    - Handle animal selection data
    - Prepare for main game implementation
 
+6. **Obstacle Course Implementation**
+   - Create game canvas/viewport
+   - Implement player movement controls
+   - Design obstacle types and behaviors
+   - Add star collection system
+   - Create collision detection
+   - Implement finish line detection
+
+7. **Level Design**
+   - Create multiple levels with increasing difficulty
+   - Design obstacle patterns
+   - Place stars strategically
+   - Balance challenge and fun
+
+8. **Scoring System**
+   - Track stars collected
+   - Time-based scoring
+   - Level completion bonuses
+   - High score tracking
+
 ### Technical Stack
 - **HTML5** - Structure and semantic markup
+- **Canvas API** - Game rendering and graphics
 - **CSS3** - Styling, Grid/Flexbox, animations
 - **Vanilla JavaScript** - Game logic and interactivity
 - **Git/GitHub** - Version control
-- **Local Storage** - Saving game preferences
+- **Local Storage** - Saving game preferences and high scores
 
 ### Future Enhancements
-- Add more animals
-- Sound effects
-- Score tracking
-- Multiple difficulty levels
-- Multiplayer support
+- Add more animals with unique abilities
+- Sound effects and background music
+- Power-ups and special items
+- Multiple themed worlds (jungle, arctic, ocean)
+- Multiplayer racing mode
+- Level editor for custom courses
+- Achievements and unlockables
+- Mobile touch controls
 
 ## Getting Started
 1. Clone the repository
