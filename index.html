@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Selection Game</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Instruction Panel -->
+        <div id="instruction-panel" class="instruction-panel">
+            <div class="instruction-content">
+                <h2>Welcome to the Animal Game!</h2>
+                <p>Here's how to play:</p>
+                <ul>
+                    <li>Choose your favorite animal from the selection board</li>
+                    <li>Click on an animal to select it</li>
+                    <li>Once you've made your choice, click the green "Let's Go" button</li>
+                    <li>Have fun playing with your chosen animal!</li>
+                </ul>
+                <button id="instruction-dismiss" class="btn btn-primary">Got it!</button>
+            </div>
+        </div>
+
+        <!-- Animal Selection Board -->
+        <div id="animal-board" class="animal-board hidden">
+            <h1>Choose Your Animal</h1>
+            <div class="animal-grid">
+                <!-- Animal cards will be dynamically generated here -->
+            </div>
+        </div>
+
+        <!-- Game Start Button -->
+        <div id="game-controls" class="game-controls hidden">
+            <button id="lets-go-btn" class="btn btn-go disabled">Let's Go!</button>
+        </div>
+
+        <!-- Main Game Area (hidden initially) -->
+        <div id="game-area" class="game-area hidden">
+            <!-- Game content will go here -->
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

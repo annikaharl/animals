@@ -1,0 +1,183 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Game Container */
+.game-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Instruction Panel */
+.instruction-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.instruction-content h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.instruction-content p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.instruction-content ul {
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto 30px;
+}
+
+.instruction-content li {
+    margin-bottom: 10px;
+    color: #666;
+}
+
+/* Animal Board */
+.animal-board {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.animal-board h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+}
+
+.animal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.animal-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.animal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.animal-card.selected {
+    border-color: #27ae60;
+    background-color: #e8f5e9;
+}
+
+.animal-card img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.animal-card .animal-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Game Controls */
+.game-controls {
+    margin-top: 30px;
+    text-align: center;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-go {
+    background-color: #27ae60;
+    color: white;
+    font-size: 1.3rem;
+    padding: 15px 40px;
+}
+
+.btn-go:hover:not(.disabled) {
+    background-color: #229954;
+    transform: scale(1.05);
+}
+
+.btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Game Area */
+.game-area {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .instruction-panel {
+        padding: 30px 20px;
+    }
+    
+    .instruction-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .animal-board h1 {
+        font-size: 2rem;
+    }
+    
+    .animal-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 15px;
+    }
+}

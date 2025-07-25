@@ -1,0 +1,125 @@
+/* Animations for the Animal Game */
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Slide In from Right */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Slide In from Left */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Rotate Animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Apply Animations */
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.bounce {
+    animation: bounce 0.6s ease-in-out;
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+/* Animal Card Hover Effect */
+.animal-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animal-card:hover {
+    animation: bounce 0.6s ease-in-out;
+}
+
+/* Button Press Effect */
+.btn:active {
+    transform: scale(0.95);
+}
+
+/* Selected Animal Card Animation */
+.animal-card.selected {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Panel Entry Animation */
+.instruction-panel,
+.animal-board {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Game Start Button Animation */
+.btn-go:not(.disabled) {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.btn-go:not(.disabled):hover {
+    animation: none;
+}
