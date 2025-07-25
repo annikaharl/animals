@@ -20,6 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: anthropics/claude-code-action@v1
-        with:
-          api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+      
+      - name: Install Claude Code
+        run: |
+          curl -fsSL https://github.com/anthropics/claude-code/releases/latest/download/install.sh | bash
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      
+      - name: Run Claude Code
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude-code --message "Review and implement the changes requested in this issue or PR"
