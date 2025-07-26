@@ -549,7 +549,36 @@ export class ObstacleCourse {
         // Controls hint
         this.ctx.font = '14px Arial';
         this.ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        this.ctx.fillText('WASD/Arrows to move, P to pause', this.canvas.width - 250, 30);
+        this.ctx.fillText('WASD/Arrows to move, Hold UP to jump higher, P to pause', this.canvas.width - 350, 30);
+        
+        // Jump power indicator
+        if (this.player.keys.up && !this.player.inWater && this.player.onGround) {
+            const currentHoldTime = this.player.jumpStartTime > 0 ? Date.now() - this.player.jumpStartTime : 0;
+            const holdRatio = Math.min(currentHoldTime / this.player.maxJumpHoldTime, 1);
+            
+            // Draw jump power bar
+            const barX = this.canvas.width - 350;
+            const barY = 40;
+            const barWidth = 100;
+            const barHeight = 10;
+            
+            // Background
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            this.ctx.fillRect(barX, barY, barWidth, barHeight);
+            
+            // Fill
+            this.ctx.fillStyle = `hsl(${holdRatio * 120}, 100%, 50%)`; // Red to green
+            this.ctx.fillRect(barX, barY, barWidth * holdRatio, barHeight);
+            
+            // Border
+            this.ctx.strokeStyle = '#FFF';
+            this.ctx.lineWidth = 1;
+            this.ctx.strokeRect(barX, barY, barWidth, barHeight);
+            
+            this.ctx.fillStyle = '#FFF';
+            this.ctx.font = '12px Arial';
+            this.ctx.fillText('Jump Power', barX + barWidth + 10, barY + 8);
+        }
     }
     
     renderGameStateOverlays() {

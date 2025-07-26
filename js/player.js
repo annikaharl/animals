@@ -12,6 +12,10 @@ export class Player {
         this.onGround = false;
         this.inWater = false;
         
+        // Debug logging
+        this.debugLogs = [];
+        this.maxLogs = 1000;
+        
         // Animal-specific properties
         this.setAnimalAbilities(animal);
         
@@ -23,8 +27,43 @@ export class Player {
             down: false
         };
         
+        // Jump mechanics
+        this.isJumping = false;
+        this.jumpStartTime = 0;
+        this.jumpHoldTime = 0;
+        this.maxJumpHoldTime = 500; // Maximum milliseconds to hold jump
+        this.minJumpPower = 8;
+        this.maxJumpPower = 20;
+        
         this.physics = new Physics();
         this.setupControls();
+        
+        // Clear old logs on new game
+        localStorage.removeItem('jumpDebugLogs');
+    }
+    
+    debugLog(message, data = {}) {
+        const log = {
+            timestamp: Date.now(),
+            message,
+            data,
+            playerState: {
+                onGround: this.onGround,
+                isJumping: this.isJumping,
+                velocityY: this.velocityY,
+                y: this.y
+            }
+        };
+        
+        this.debugLogs.push(log);
+        if (this.debugLogs.length > this.maxLogs) {
+            this.debugLogs.shift();
+        }
+        
+        // Save to localStorage
+        localStorage.setItem('jumpDebugLogs', JSON.stringify(this.debugLogs));
+        
+        console.log(message, data);
     }
     
     setAnimalAbilities(animal) {
@@ -50,6 +89,10 @@ export class Player {
         this.speed = animalAbility.speed;
         this.jumpPower = animalAbility.jumpPower;
         this.waterSpeed = animalAbility.waterSpeed;
+        
+        // Set jump power range based on animal's jump ability
+        this.minJumpPower = Math.max(5, animalAbility.jumpPower * 0.6);
+        this.maxJumpPower = animalAbility.jumpPower * 1.2;
     }
     
     setupControls() {
@@ -69,7 +112,11 @@ export class Player {
                 case 'arrowup':
                 case 'w':
                 case ' ': // Spacebar for jump
-                    this.keys.up = true;
+                    if (!this.keys.up) {
+                        this.keys.up = true;
+                        this.jumpStartTime = Date.now();
+                        this.debugLog('Jump key pressed, charging jump...');
+                    }
                     e.preventDefault();
                     break;
                 case 'arrowdown':
@@ -95,6 +142,28 @@ export class Player {
                 case 'w':
                 case ' ':
                     this.keys.up = false;
+                    this.debugLog('Jump key released', {
+                        jumpStartTime: this.jumpStartTime,
+                        isJumping: this.isJumping,
+                        onGround: this.onGround,
+                        velocityY: this.velocityY
+                    });
+                    if (this.jumpStartTime > 0 && this.isJumping) {
+                        // Calculate jump power and execute jump immediately
+                        const holdTime = Date.now() - this.jumpStartTime;
+                        const holdRatio = Math.min(holdTime / this.maxJumpHoldTime, 1);
+                        const jumpPower = this.minJumpPower + (this.maxJumpPower - this.minJumpPower) * holdRatio;
+                        this.debugLog('Executing jump!', {
+                            holdTime,
+                            holdRatio,
+                            jumpPower,
+                            velocityY: -jumpPower
+                        });
+                        this.velocityY = -jumpPower;
+                        this.jumpStartTime = 0;
+                        this.isJumping = false;
+                        this.onGround = false;
+                    }
                     break;
                 case 'arrowdown':
                 case 's':
@@ -105,6 +174,10 @@ export class Player {
     }
     
     update() {
+        // Store previous state for debugging
+        const prevOnGround = this.onGround;
+        const prevVelocityY = this.velocityY;
+        
         // Reset ground state (will be set true if touching ground)
         this.onGround = false;
         
@@ -120,6 +193,14 @@ export class Player {
         
         this.physics.applyFriction(this);
         this.physics.updatePosition(this);
+        
+        // Log state changes
+        if (prevOnGround !== this.onGround) {
+            this.debugLog('Ground state changed', {
+                prevOnGround,
+                onGround: this.onGround
+            });
+        }
     }
     
     handleInput() {
@@ -135,9 +216,13 @@ export class Player {
             if (this.inWater) {
                 // Swimming up
                 this.velocityY = Math.max(this.velocityY - 2, -6);
-            } else {
-                // Jumping
-                this.physics.jump(this, this.jumpPower);
+            } else if (!this.isJumping && Math.abs(this.velocityY) < 1) {
+                // Prepare to jump - check if we're essentially on ground (small velocity)
+                this.isJumping = true;
+                this.debugLog('Setting isJumping to true', {
+                    onGround: this.onGround,
+                    velocityY: this.velocityY
+                });
             }
         }
         if (this.keys.down && this.inWater) {
@@ -215,6 +300,9 @@ export class Player {
         this.velocityY = 0;
         this.onGround = false;
         this.inWater = false;
+        this.isJumping = false;
+        this.jumpStartTime = 0;
+        this.jumpHoldTime = 0;
     }
     
     // Get center position for camera following

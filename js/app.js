@@ -23,6 +23,8 @@ class AnimalGame {
         this.obstacleCourse = null;
         this.gameCanvas = null;
         this.currentLevel = 1;
+        this.levelCompletionHandled = false;
+        this.gameOverHandled = false;
         
         this.init();
     }
@@ -249,10 +251,16 @@ class AnimalGame {
                 }
                 
                 // Handle game completion
-                if (gameState.state === 'completed') {
+                if (gameState.state === 'completed' && !this.levelCompletionHandled) {
+                    this.levelCompletionHandled = true;
                     this.handleLevelCompletion(gameState);
-                } else if (gameState.state === 'gameOver') {
+                } else if (gameState.state === 'gameOver' && !this.gameOverHandled) {
+                    this.gameOverHandled = true;
                     this.handleGameOver(gameState);
+                } else if (gameState.state === 'playing') {
+                    // Reset flags when playing
+                    this.levelCompletionHandled = false;
+                    this.gameOverHandled = false;
                 }
             }
             
@@ -280,6 +288,8 @@ class AnimalGame {
     }
     
     restartLevel() {
+        this.levelCompletionHandled = false;
+        this.gameOverHandled = false;
         if (this.obstacleCourse) {
             this.obstacleCourse.restart();
         }

@@ -72,9 +72,11 @@ export class Physics {
     }
 
     checkGroundCollision(entity, groundY) {
-        if (entity.y + entity.height >= groundY) {
+        if (entity.y + entity.height >= groundY - 1) {
             entity.y = groundY - entity.height;
-            entity.velocityY = 0;
+            if (entity.velocityY > 0) {
+                entity.velocityY = 0;
+            }
             entity.onGround = true;
             return true;
         }
