@@ -89,7 +89,16 @@ class AnimalGame {
     startGame() {
         const selectedAnimal = this.gameState.getSelectedAnimal();
         if (!selectedAnimal) {
-            alert('Please select an animal first!');
+            // Flash the instruction text instead of alert
+            const instructionText = document.querySelector('.animal-board h1');
+            if (instructionText) {
+                instructionText.style.color = '#ff6b6b';
+                instructionText.textContent = 'Please select an animal first!';
+                setTimeout(() => {
+                    instructionText.style.color = '';
+                    instructionText.textContent = 'Choose Your Animal';
+                }, 2000);
+            }
             return;
         }
         

@@ -184,7 +184,7 @@ export class ObstacleCourse {
             this.update();
         }
         this.render();
-        requestAnimationFrame(() => this.gameLoop());
+        requestAnimationFrame(this.gameLoop.bind(this));
     }
     
     update() {
