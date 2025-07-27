@@ -1,5 +1,6 @@
 import { Player } from './player.js';
 import { Physics } from './physics.js';
+import { AudioManager } from './audioManager.js';
 
 export class ObstacleCourse {
     constructor(canvas, animal) {
@@ -20,8 +21,11 @@ export class ObstacleCourse {
         this.worldHeight = 600;
         this.groundY = this.worldHeight - 50;
         
+        // Audio system
+        this.audioManager = new AudioManager();
+        
         // Game objects
-        this.player = new Player(animal, 100, this.groundY - 100);
+        this.player = new Player(animal, 100, this.groundY - 100, this.audioManager);
         this.obstacles = [];
         this.stars = [];
         this.particles = [];

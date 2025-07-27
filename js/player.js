@@ -1,7 +1,8 @@
 import { Physics } from './physics.js';
+import { AudioManager } from './audioManager.js';
 
 export class Player {
-    constructor(animal, startX = 100, startY = 300) {
+    constructor(animal, startX = 100, startY = 300, audioManager = null) {
         this.animal = animal;
         this.x = startX;
         this.y = startY;
@@ -10,6 +11,7 @@ export class Player {
         this.velocityX = 0;
         this.velocityY = 0;
         this.onGround = false;
+        this.wasOnGround = false;
         this.inWater = false;
         
         
@@ -33,6 +35,7 @@ export class Player {
         this.maxJumpPower = 20;
         
         this.physics = new Physics();
+        this.audioManager = audioManager;
         this.setupControls();
     }
     
@@ -117,6 +120,12 @@ export class Player {
                         const holdRatio = Math.min(holdTime / this.maxJumpHoldTime, 1);
                         const jumpPower = this.minJumpPower + (this.maxJumpPower - this.minJumpPower) * holdRatio;
                         this.velocityY = -jumpPower;
+                        
+                        // Play jump sound effect
+                        if (this.audioManager) {
+                            this.audioManager.playJumpSound(this.animal.name);
+                        }
+                        
                         this.jumpStartTime = 0;
                         this.isJumping = false;
                         this.onGround = false;
@@ -131,6 +140,9 @@ export class Player {
     }
     
     update() {
+        // Store previous ground state for landing detection
+        this.wasOnGround = this.onGround;
+        
         // Reset ground state (will be set true if touching ground)
         this.onGround = false;
         
@@ -147,6 +159,16 @@ export class Player {
         this.physics.applyFriction(this);
         this.physics.updatePosition(this);
         
+        // Check for landing (transition from not on ground to on ground)
+        if (!this.wasOnGround && this.onGround && this.audioManager) {
+            // Determine surface type for different landing sounds
+            let surfaceType = 'default';
+            if (this.inWater) {
+                surfaceType = 'water';
+            }
+            
+            this.audioManager.playLandingSound(surfaceType);
+        }
     }
     
     handleInput() {
@@ -241,6 +263,7 @@ export class Player {
         this.velocityX = 0;
         this.velocityY = 0;
         this.onGround = false;
+        this.wasOnGround = false;
         this.inWater = false;
         this.isJumping = false;
         this.jumpStartTime = 0;
